@@ -2,8 +2,12 @@
   "name": "clist-language-server",
   "displayName": "IBM CLIST Language Server",
   "description": "VS Code language server support for IBM CLIST files.",
-  "version": "0.1.0",
-  "publisher": "local",
+  "version": "0.2.0",
+  "publisher": "TMcQ",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chipset/CLIST-LSP.git"
+  },
   "engines": {
     "vscode": "^1.91.0"
   },
@@ -21,7 +25,8 @@
     "onLanguage:clist",
     "onCommand:clistLsp.restartServer"
   ],
-  "main": "./client/extension.js",
+  "icon": "images/icon.png",
+  "main": "./dist/client/extension.js",
   "contributes": {
     "languages": [
       {
@@ -54,12 +59,19 @@
     ]
   },
   "scripts": {
+    "build:client": "esbuild client/extension.js --bundle --platform=node --format=cjs --outfile=dist/client/extension.js --external:vscode",
+    "build:server": "esbuild server/server.js --bundle --platform=node --format=cjs --outfile=dist/server/server.js",
+    "build": "npm run build:client && npm run build:server",
+    "vscode:prepublish": "npm run build",
     "test": "node --test"
   },
   "dependencies": {
     "vscode-languageclient": "^9.0.1",
     "vscode-languageserver": "^9.0.1",
     "vscode-languageserver-textdocument": "^1.0.11"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.10"
   },
   "license": "MIT"
 }

@@ -1,24 +1,63 @@
 # IBM CLIST Language Server
 
-This extension provides a Language Server Protocol (LSP) implementation for IBM CLIST files in VS Code.
+Language Server Protocol (LSP) support for IBM CLIST files in VS Code.
 
 ## Features
 
-- Diagnostics for:
-  - Unmatched `END`
-  - Unclosed `DO` blocks
-  - `GOTO` statements that reference unknown labels
-  - Missing `PROC` statement
-- Go to Definition for label references
-- Document Symbols for `PROC` and labels
-- Hover help for common CLIST keywords
-- Keyword completion
+- Lint diagnostics for:
+  - 80-column overflow (error)
+  - missing `PROC`
+  - unmatched `END` and unclosed `DO`
+  - malformed `IF`/missing `THEN` and unmatched `ELSE`
+  - invalid `SET` form
+  - missing `READ`/`WRITE` arguments
+  - duplicate labels and duplicate `PROC` parameters
+  - unknown `GOTO` targets
+  - unsafe `GOTO` into deeper `DO` blocks
+  - unbalanced quotes and parentheses
+  - undefined variable references and assigned-but-unused variables
+  - labels never targeted by `GOTO`
+- Go to Definition for labels and variables
+- Rename for labels and variables
+- Document + Workspace Symbols
+- Hover help for CLIST keywords and command usage
+- Completion + snippets (`IF THEN DO`, `SET`)
+- Signature Help for common commands (`PROC`, `SET`, `IF`, `GOTO`, `READ`, `WRITE`)
+- Folding ranges for block regions (`DO ... END`)
+- Document Formatting (indentation for CLIST block structure)
+- Semantic highlighting (keywords, labels, variables, operators, numbers, strings, comments)
+- Quick Fixes:
+  - add missing `THEN`
+  - insert missing `END`
+- Configurable linting via `clist-lsp.json` in the source file directory:
+  - `maxColumns`
+  - `severityOverrides`
 
 ## File Types
 
 - `.clist`
 - `.clst`
 - `.exec`
+
+## Lint Config Example
+
+Create `clist-lsp.json` next to your CLIST file:
+
+```json
+{
+  "maxColumns": 80,
+  "severityOverrides": {
+    "var-unused": 2,
+    "missing-proc": 1
+  }
+}
+```
+
+Severity values:
+
+- `1` = Error
+- `2` = Warning
+- `3` = Information
 
 ## Development
 

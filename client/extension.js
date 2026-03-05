@@ -20,7 +20,7 @@ async function activate(context) {
 }
 
 async function startClient(context) {
-  const serverModule = context.asAbsolutePath(path.join("server", "server.js"));
+  const serverModule = context.asAbsolutePath(path.join("dist", "server", "server.js"));
 
   const serverOptions = {
     run: { module: serverModule, transport: TransportKind.ipc },
